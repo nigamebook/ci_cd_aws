@@ -22,6 +22,12 @@ pipeline{
         //sonar variable section
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
+        //it is of the the format 'ecr:<region>:<id of the credential for aws>'
+        registryCredential = 'ecr:us-west-1:awscreds'
+        // This is the ecr uri
+        appRegistry = '690869813674.dkr.ecr.ap-south-1.amazonaws.com/vprofileappimg'
+        //this is also the ecr uri with "https" prefixed and removing the last part.
+        vprofileRegistry = "https://690869813674.dkr.ecr.ap-south-1.amazonaws.com"
         
 
     }
@@ -82,6 +88,25 @@ pipeline{
                   ]
                 )
             }
+        }
+
+        stage('Build App Image') {
+            steps {
+                script {
+                    dockerImage = docker.build( appRegistry + ":$BUILD_NUMBER", "./Docker-files/app/multistage/")
+                }
+            }
+        }
+        
+        stage('Upload App Image') {
+          steps{
+            script {
+              docker.withRegistry( vprofileRegistry, registryCredential ) {
+                dockerImage.push("$BUILD_NUMBER")
+                dockerImage.push('latest')
+              }
+            }
+          }
         }
     }
 }
