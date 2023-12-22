@@ -23,7 +23,7 @@ pipeline{
         SONARSERVER = 'sonarserver'
         SONARSCANNER = 'sonarscanner'
         //it is of the the format 'ecr:<region>:<id of the credential for aws>'
-        registryCredential = 'ecr:us-west-1:awscreds'
+        registryCredential = 'ecr:ap-south-1:awscreds'
         // This is the ecr uri
         appRegistry = '690869813674.dkr.ecr.ap-south-1.amazonaws.com/vprofileappimg'
         //this is also the ecr uri with "https" prefixed and removing the last part.
