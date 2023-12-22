@@ -84,8 +84,11 @@ pipeline{
             }
         }
     }
+
+
     post {
         always {
+            echo ''
             echo 'Slack Notifications.'
             slackSend channel: '#jenkinscicd',
                 color: COLOR_MAP[currentBuild.currentResult],
